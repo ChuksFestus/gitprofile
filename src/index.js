@@ -9,8 +9,12 @@ import * as serviceWorker from "./serviceWorker";
 
 const GlobalStyle = createGlobalStyle`
 	${normalize()}
+	* {
+		padding: 0;
+		margin: 0;
+	}
   body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     max-width: 100vw;
   }
 `;
