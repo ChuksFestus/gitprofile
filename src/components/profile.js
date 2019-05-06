@@ -6,6 +6,7 @@ import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@reach/tabs";
 import Loading from "./loading";
 
 const Repo = React.lazy(() => import("./repo"));
+const Starred = React.lazy(() => import("./starred"));
 const Following = React.lazy(() => import("./following"));
 const Followers = React.lazy(() => import("./followers"));
 
@@ -21,6 +22,7 @@ const List = styled(TabList)`
 		background: none;
 		border: transparent;
 		padding: 1rem;
+		cursor: pointer;
 		:active,
 		:focus {
 			border-bottom: 3px solid #f90;
@@ -98,9 +100,10 @@ class Profile extends React.Component {
 
 	render() {
 		const { user, isLoading } = this.state;
+		console.log({props: this.props})
 		return (
 			<div>
-				<Header>
+				<Header onClick={() => this.props.history.goBack()}>
 					<Container>GIT PROFILE</Container>
 				</Header>
 				{isLoading ? (
@@ -130,8 +133,8 @@ class Profile extends React.Component {
 								<Tabs>
 									<List>
 										<Tab>Repositories</Tab>
-										<Tab>Following</Tab>
-										<Tab>Followers</Tab>
+										<Tab>Following <span style={{fontSize: "12px", color: "black", fontWeight: "bold", paddingLeft: "1em"}}>{user.following}</span></Tab>
+										<Tab>Followers <span style={{fontSize: "12px", color: "black", fontWeight: "bold", paddingLeft: "1em"}}>{user.followers}</span></Tab>
 										<Tab>stars</Tab>
 									</List>
 
@@ -146,7 +149,7 @@ class Profile extends React.Component {
 											<Followers user={this.props.match.url} />
 										</TabPanel>
 										<TabPanel>
-											<p>dhdh</p>
+											<Starred user={this.props.match.url} />
 										</TabPanel>
 									</Pannels>
 								</Tabs>
