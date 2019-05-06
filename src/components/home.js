@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { between, rem, fluidRange } from "polished";
+import { Link } from "react-router-dom";
+
+import Loading from "./loading";
 
 const Container = styled.section`
 	min-height: 100vh;
@@ -76,6 +79,10 @@ const Container = styled.section`
 		div {
 			box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 			padding: 1em;
+			a {
+				text-decoration: none;
+				color: black;
+			}
 			img {
 				width: 100%;
 			}
@@ -85,6 +92,11 @@ const Container = styled.section`
 				overflow: hidden;
 				text-overflow: ellipsis;
 			}
+			:hover {
+				a {
+					color: #f90;
+				}
+			}
 		}
 	}
 `;
@@ -92,15 +104,17 @@ const Container = styled.section`
 class Home extends React.Component {
 	state = {
 		value: "",
-		users: []
+		users: [],
+		isLoading: false
 	};
 
 	handleSearch = e => {
 		e.preventDefault();
+		this.setState({ isLoading: true });
 		fetch(`https://api.github.com/search/users?q=${this.state.value}`)
 			.then(res => res.json())
 			.then(result => {
-				this.setState({ users: result.items });
+				this.setState({ users: result.items, isLoading:false });
 			});
 	};
 
@@ -109,8 +123,7 @@ class Home extends React.Component {
 	};
 
 	render() {
-		const { users } = this.state;
-		console.log({ users });
+		const { users, isLoading } = this.state;
 		return (
 			<Container>
 				<h1>GIT PROFILE</h1>
@@ -123,15 +136,21 @@ class Home extends React.Component {
 					/>
 					<button>search</button>
 				</form>
-				<div className="grid">
-					{users.length !== 0 &&
-						users.map(user => (
-							<div key={user.login}>
-								<img src={user.avatar_url} alt="" />
-								<h2>{user.login}</h2>
-							</div>
-						))}
-				</div>
+				{isLoading ? (
+					<Loading />
+				) : (
+					<div className="grid">
+						{users.length !== 0 &&
+							users.map(user => (
+								<div key={user.login}>
+									<Link to={`${user.login}`}>
+										<img src={user.avatar_url} alt="" />
+										<h2>{user.login}</h2>
+									</Link>
+								</div>
+							))}
+					</div>
+				)}
 			</Container>
 		);
 	}

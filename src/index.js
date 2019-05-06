@@ -1,10 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
-import {normalize} from "polished"
+import { normalize } from "polished";
 
-import App from "./App";
+import Routes from "./routes";
 import * as serviceWorker from "./serviceWorker";
 
 const GlobalStyle = createGlobalStyle`
@@ -20,10 +19,10 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 ReactDOM.render(
-	<Router>
-		<App />
+	<React.Fragment>
+		<Routes />
 		<GlobalStyle />
-	</Router>,
+	</React.Fragment>,
 	document.getElementById("root")
 );
 
